@@ -347,7 +347,7 @@ def coco_optimize(solver, fun, max_evals, max_runs=1e9):
 # CAVEAT: this might be modified from input args
 suite_name = "bbob"  # always overwritten when called from system shell
                      # see available choices via cocoex.known_suite_names
-budget = 10  # maxfevals = budget x dimension ### INCREASE budget WHEN THE DATA CHAIN IS STABLE ###
+budget = 3  # maxfevals = budget x dimension ### INCREASE budget WHEN THE DATA CHAIN IS STABLE ###
 max_runs = 1e9  # number of (almost) independent trials per problem instance
 number_of_batches = 1  # allows to run everything in several batches
 current_batch = 1      # 1..number_of_batches

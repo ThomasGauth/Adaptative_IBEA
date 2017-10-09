@@ -28,7 +28,7 @@ def suppr_ele(list,index):
 def ada_ibea(fun, lbounds, ubounds, budget):
     lbounds, ubounds = np.array(lbounds), np.array(ubounds)
     dim, x_min, f_min = len(lbounds), (lbounds + ubounds) / 2, None
-    population_size = 200
+    population_size = 50
     k=0.05
     mutation = 0.1
     X = np.array(lbounds + (ubounds - lbounds) * np.random.rand(population_size, dim))
@@ -62,7 +62,7 @@ def ada_ibea(fun, lbounds, ubounds, budget):
                 I = min([F_norm[indice_suppr][0]-F_norm[i][0],F_norm[indice_suppr][1]-F_norm[i][1]])
                 F_fitness[i] += math.exp(-I/(c*k))
 
-        if budget <= 0 :
+        if budget <= 1 :
             ##### je ne sais pas trop
             index_return = np.argmax(F_fitness)
             return X[index_return]
@@ -97,6 +97,13 @@ def ada_ibea(fun, lbounds, ubounds, budget):
             X += [new]
 
         ## ajout random (pas fait)
+        nb_random_add = 10
+        for i in range(nb_random_add):
+            new = X[0]
+            for i in range(len(new)) :
+                lb, ub = lbounds[i], ubounds[i]
+                new[i] =  random.uniform(lb, ub)
+		X += [new]
 
 
         budget -= 1
