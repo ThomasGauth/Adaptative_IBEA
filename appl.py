@@ -355,7 +355,7 @@ current_batch = 1      # 1..number_of_batches
 SOLVER = ada_ibea
 # SOLVER = my_solver # SOLVER = fmin_slsqp # SOLVER = cma.fmin
 suite_instance = "" # "year:2016"
-suite_options = "dimensions: 2,3,5,10 "  # if 40 is not desired
+suite_options = "dimensions: 2,3,5,10,20 "  # if 40 is not desired
 # for more suite options, see http://numbbo.github.io/coco-doc/C/#suite-parameters
 observer_options = ObserverOptions({  # is (inherited from) a dictionary
                     'algorithm_info': "A SIMPLE RANDOM SEARCH ALGORITHM", # CHANGE/INCOMMENT THIS!
