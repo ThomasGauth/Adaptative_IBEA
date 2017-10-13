@@ -110,7 +110,8 @@ def ada_ibea(fun, lbounds, ubounds, budget):
             new = X[np.random.randint(0,len(X))]
             for i in range(len(new)) :
                 lb, ub = lbounds[i], ubounds[i]
-                new[i] = min([max([new[i] + mutation*random.uniform(lb, ub),lb]),ub])
+                if random.random()< mutation :
+                		new[i] = random.uniform(lb, ub)
             X += [new]
 
         ## ajout random (pas fait)

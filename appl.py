@@ -358,7 +358,7 @@ suite_instance = "" # "year:2016"
 suite_options = "dimensions: 2,3,5,10,20 "  # if 40 is not desired
 # for more suite options, see http://numbbo.github.io/coco-doc/C/#suite-parameters
 observer_options = ObserverOptions({  # is (inherited from) a dictionary
-                    'algorithm_info': "A SIMPLE RANDOM SEARCH ALGORITHM", # CHANGE/INCOMMENT THIS!
+                    'algorithm_info': "Adaptative IBEA Algorithm", # CHANGE/INCOMMENT THIS!
                     # 'algorithm_name': "",  # default already provided from SOLVER name
                     # 'result_folder': "",  # default already provided from several global vars
                    })
