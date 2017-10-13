@@ -12,7 +12,7 @@ def norma(val,b_max,b_min):
     return (val-b_min)/(b_max-b_min)
 
 def fitness_eval(indice,size,F_norm,c,k):
-	# compute fitness values
+	# compute "epsilon+" fitness values
     res = 0
     for i in range(size):
         if i!=indice :
@@ -29,21 +29,24 @@ def suppr_ele(list,index):
     return result
 
 def ada_ibea(fun, lbounds, ubounds, budget):
+	# Algorithm implementation
+
     lbounds, ubounds = np.array(lbounds), np.array(ubounds)
-    dim, x_min, f_min = len(lbounds), (lbounds + ubounds) / 2, None
+    dim = len(lbounds)
 
     # Initialise parameters
     population_size = 50
     k=0.05
-    mutation = 0.1
+    mutation_prob = 0.05
 
     # Initial population of size population_size
     X = np.array(lbounds + (ubounds - lbounds) * np.random.rand(population_size, dim))
+
+    # Iterate over budget
     while budget > 0:
-    	# X image in the objective space
+    	# X image in the bi-objective space
         F = [fun(x) for x in X]
         size = len(X)
-        # Bi-opjective optimisation 
         F1 = [F[i][0] for i in range(size)]
         F2 = [F[i][1] for i in range(size)]
         b1_max,b1_min,b2_max,b2_min = max(F1),min(F1),max(F2),min(F2)
@@ -53,7 +56,6 @@ def ada_ibea(fun, lbounds, ubounds, budget):
         c = 0
         for i in range(size):
             for j in range(size):
-                # esp <0 ???
                 eps = min([F_norm[i][0]-F_norm[j][0],F_norm[i][1]-F_norm[j][1]])
                 if abs(eps)>c :
                     c=abs(eps)
@@ -77,7 +79,7 @@ def ada_ibea(fun, lbounds, ubounds, budget):
                 F_fitness[i] += math.exp(-I/(c*k))
 
         if budget <= 1 :
-            ##### je ne sais pas trop
+            # don't apply the genetic selection and return the best solution
             index_return = np.argmax(F_fitness)
             return X[index_return]
 
@@ -87,6 +89,7 @@ def ada_ibea(fun, lbounds, ubounds, budget):
         while len(F_fitness) > alpha :
         	# uniformly chose two solutions at random from population with replacement
             fight = np.random.randint(0,len(F_fitness),2)
+            # Tournament
             if F_fitness[fight[0]] > F_fitness[fight[1]] :
                 X = suppr_ele(X,fight[1])
                 F_fitness = suppr_ele(F_fitness,fight[1])
@@ -95,26 +98,30 @@ def ada_ibea(fun, lbounds, ubounds, budget):
                 F_fitness = suppr_ele(F_fitness,fight[0])
 
 
-        #### Generic variation ( recombination + mutation )
+        #### Generic variations ( recombination + mutation )
 
         ## Recombination ( 25% of the new population)
-        while len(X) < ((3*population_size)//4) :
+        while len(X) < (alpha + (population_size - alpha)//2) :
         	# uniformly chose two solutions at random from population with replacement 
             couple = np.random.randint(0,len(X),2)
+            # Randomly chose the intersection point between parents 
             point_intersection = np.random.randint(0,dim)
+            # baby = crossover between parents
             baby = np.append(X[couple[0]][0:point_intersection], X[couple[1]][point_intersection:])   
             X += [baby]
 
-        ## Mutation
+        ## Mutations to complete X
         while len(X) < population_size :
+        	# Chose an individual
             new = X[np.random.randint(0,len(X))]
             for i in range(len(new)) :
                 lb, ub = lbounds[i], ubounds[i]
-                if random.random()< mutation :
+                # Apply mutation with a probability of mutation_prob
+                if random.random()< mutation_prob :
                 		new[i] = random.uniform(lb, ub)
             X += [new]
 
-        ## ajout random (pas fait)
+        ## Addition of 10 (random) new elements
         nb_random_add = 10
         for i in range(nb_random_add):
             new = X[0]
