@@ -101,14 +101,8 @@ def ada_ibea(fun, lbounds, ubounds, budget):
         while len(X) < ((3*population_size)//4) :
         	# uniformly chose two solutions at random from population with replacement 
             couple = np.random.randint(0,len(X),2)
-            baby = []
             point_intersection = np.random.randint(0,dim)
-            #for i in range(dim):
-            #    baby +=[(X[couple[0]][i]-X[couple[1]][i])/2]
-            for i in range(point_intersection):
-                baby +=[X[couple[0]][i]]
-            for i in range(point_intersection,dim):
-                baby +=[X[couple[1]][i]]
+            baby = np.append(X[couple[0]][0:point_intersection], X[couple[1]][point_intersection:])   
             X += [baby]
 
         ## Mutation
